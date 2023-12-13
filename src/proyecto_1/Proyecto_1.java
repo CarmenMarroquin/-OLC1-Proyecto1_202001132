@@ -4,10 +4,8 @@
  */
 package proyecto_1;
 
-/**
- *
- * @author carme
- */
+
+
 public class Proyecto_1 {
 
     /**
@@ -18,6 +16,35 @@ public class Proyecto_1 {
         
         Interfaz ventana = new Interfaz();
         ventana.show();
+        
+        analizador("src/analizadorJC/", "Lexer.jflex", "Parser.cup");
     }
     
-}
+        public static void analizador (String ruta, String jflexFile,String cupFile) {
+        
+            
+         try{
+        String opcionesJflex [ ] = {ruta + jflexFile,"-d",ruta };
+        jflex.Main.generate(opcionesJflex);
+        
+         String opcionesCup  [ ] = {"-destdir", ruta , "-parser", "Parser" , ruta+cupFile };
+         java_cup.Main.main(opcionesCup);
+         
+         
+         } catch (Exception e){
+             
+             System.out.println("No se ha podido generar los analizadores");
+             System.out.println(e);
+         
+         }
+        
+        
+        
+        
+        }
+    
+
+    
+    }
+    
+

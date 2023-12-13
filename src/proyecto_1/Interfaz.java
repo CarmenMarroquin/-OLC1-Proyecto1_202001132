@@ -4,6 +4,8 @@
  */
 package proyecto_1;
 
+
+import analizadorJC.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,10 +13,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+
+
+
 
 /**
  *
@@ -45,12 +52,15 @@ public class Interfaz extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jScrollPane1 = new javax.swing.JScrollPane();
         area_texto = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         abrir_archivo = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        ejecucion_analisis = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
 
         jMenu1.setText("jMenu1");
@@ -60,6 +70,13 @@ public class Interfaz extends javax.swing.JFrame {
         area_texto.setColumns(20);
         area_texto.setRows(5);
         jScrollPane1.setViewportView(area_texto);
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(102, 102, 102));
+        jTextArea1.setColumns(20);
+        jTextArea1.setForeground(new java.awt.Color(102, 102, 102));
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
 
         jMenu2.setText("Archivo");
 
@@ -89,7 +106,16 @@ public class Interfaz extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Edit");
+        jMenu3.setText("Ejecutar");
+
+        ejecucion_analisis.setText("Ejecuta");
+        ejecucion_analisis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ejecucion_analisisActionPerformed(evt);
+            }
+        });
+        jMenu3.add(ejecucion_analisis);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("jMenu4");
@@ -103,7 +129,9 @@ public class Interfaz extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
                 .addContainerGap(352, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -111,7 +139,9 @@ public class Interfaz extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -227,6 +257,26 @@ public class Interfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void ejecucion_analisisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecucion_analisisActionPerformed
+        // TODO add your handling code here:
+        
+      //  StringReader reader = new StringReader(area_texto.getText());
+              //  BufferedReader text = new BufferedReader(reader);
+               // analizadorJC = new Lexer (text);
+               String texto = this.area_texto.getText();
+            Lexer analizadorLexico = new Lexer(new BufferedReader(new StringReader(texto)));
+            
+            Parser analizador_sintac = new Parser(analizadorLexico);
+           try {
+               analizador_sintac.parse();
+           } catch (Exception ex) {
+               System.out.println("Error al compilar");
+               System.out.println(ex);
+           }
+            
+            System.out.println("se hizo clic en ejecutar"+texto);
+    }//GEN-LAST:event_ejecucion_analisisActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -265,6 +315,7 @@ public class Interfaz extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem abrir_archivo;
     private javax.swing.JTextArea area_texto;
+    private javax.swing.JMenuItem ejecucion_analisis;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -273,5 +324,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,0 +1,115 @@
+
+/* ----- AREA DE CODIGO DE USUARIO ----- */
+
+
+/* IMPORTACIONES Y PAQUETES */
+package analizadorJC;
+import java_cup.runtime.*;
+
+
+/* CODIGO PARA EL PARSER */
+/* METODOS PARA RECUPERACION DE ERRORES SINTACTICOS */
+
+parser code{:
+    public void syntax_error(Symbol s){
+        // INFORMACION DEL ERROR
+        int fila = s.right + 1;
+        int columna = s.left + 1;
+        String lexema = s.value.toString();
+        System.out.println("Error Sintactico recuperado; Lexema: " + lexema + " Fila: " + fila + " Columna: " + columna);
+    }
+
+    public void unrecovered_syntax_error(Symbol s){
+        // INFORMACION DEL ERROR
+        int fila = s.right + 1;
+        int columna = s.left + 1;
+        String lexema = s.value.toString();
+        System.out.println("Error Sintactico no recuperado; Lexema: " + lexema + " Fila: " + fila + " Columna: " + columna);
+    }
+
+    // Se puede añadir más código aquí
+:};
+
+// CODIGO PARA ACCIONES GRAMATICALES //
+action code{:
+:};
+
+/* DECLARACIONES */
+
+/* TERMINALES */
+
+
+
+terminal String  PUNTO_COMA;
+terminal String  DOS_PUNTOS;
+terminal String  LETRA_MAYUSCULA;
+terminal String  LETRA_MINUSCULA;
+terminal String  NUMERO;
+terminal String  GUION;
+terminal String  GUION_N;
+terminal String  CONJ;
+terminal String  IGUAL;
+terminal String  COMA;
+terminal String  LLAVEA;
+terminal String  LLAVEC; 
+terminal String  ESPECIALES;
+terminal String  IDENTIFICADOR;
+
+
+
+
+
+
+/* NO TERMINALES */
+non terminal inicio;
+non terminal conj;
+non terminal notacion;
+non terminal letra_minuscula;
+non terminal letra_mayuscula;
+non terminal lista_conjuntos;
+non terminal numeros;
+non terminal secuencia_numero;
+non terminal letras_MM;
+non terminal secuencia_letras;
+
+
+
+
+
+
+
+
+/* PRECEDENCIA */ 
+
+/* NO TERMINAL INICIAL */
+start with inicio;
+inicio::= LLAVEA lista_conjuntos  LLAVEC;
+
+lista_conjuntos::= lista_conjuntos conj
+                            |conj;
+
+conj::=  CONJ DOS_PUNTOS  IDENTIFICADOR IGUAL notacion PUNTO_COMA ;
+
+notacion::= letra_mayuscula
+                  |letra_minuscula
+                  |secuencia_numero
+                  |secuencia_letras
+                  |numeros;
+
+letra_mayuscula::=LETRA_MAYUSCULA GUION_N LETRA_MAYUSCULA;
+letra_minuscula::=LETRA_MINUSCULA GUION_N LETRA_MINUSCULA;
+numeros::= NUMERO GUION NUMERO;
+
+secuencia_numero::=NUMERO COMA secuencia_numero 
+                               |NUMERO;
+
+secuencia_letras::= letras_MM COMA secuencia_letras
+                                |letras_MM;
+
+letras_MM::=LETRA_MAYUSCULA
+                    |LETRA_MINUSCULA;
+
+//especial::=ESPECIALES GUION_N ESPECIALES;
+
+
+
