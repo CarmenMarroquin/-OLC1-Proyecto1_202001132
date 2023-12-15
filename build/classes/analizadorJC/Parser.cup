@@ -52,8 +52,21 @@ terminal String  IGUAL;
 terminal String  COMA;
 terminal String  LLAVEA;
 terminal String  LLAVEC; 
-terminal String  ESPECIALES;
 terminal String  IDENTIFICADOR;
+terminal String  STRING;
+terminal String  OR;
+terminal String  CONCATENACION;
+terminal String  POSITIVO;
+terminal String  OPCIONAL;
+terminal String  KLEENE;
+terminal String  PARENTESIS_A;
+terminal String  PARENTESIS_C;
+terminal String  COMILLA_DOBLE;
+terminal String  COMILLA_SIMPLE;
+terminal String  SALTO;
+
+
+terminal String  ASCII;
 
 
 
@@ -66,13 +79,17 @@ non terminal conj;
 non terminal notacion;
 non terminal letra_minuscula;
 non terminal letra_mayuscula;
-non terminal lista_conjuntos;
 non terminal numeros;
 non terminal secuencia_numero;
 non terminal letras_MM;
 non terminal secuencia_letras;
-
-
+non terminal especial;
+non terminal operacion;
+non terminal operando;
+non terminal expresiones;
+non terminal declaraciones;
+non terminal declaracion;
+non terminal simbolos;
 
 
 
@@ -83,10 +100,13 @@ non terminal secuencia_letras;
 
 /* NO TERMINAL INICIAL */
 start with inicio;
-inicio::= LLAVEA lista_conjuntos  LLAVEC;
+inicio::= LLAVEA declaraciones LLAVEC;
 
-lista_conjuntos::= lista_conjuntos conj
-                            |conj;
+declaraciones::= declaraciones declaracion
+                        |declaracion;
+
+declaracion::=conj
+                        |expresiones;
 
 conj::=  CONJ DOS_PUNTOS  IDENTIFICADOR IGUAL notacion PUNTO_COMA ;
 
@@ -94,6 +114,7 @@ notacion::= letra_mayuscula
                   |letra_minuscula
                   |secuencia_numero
                   |secuencia_letras
+                  |especial
                   |numeros;
 
 letra_mayuscula::=LETRA_MAYUSCULA GUION_N LETRA_MAYUSCULA;
@@ -106,10 +127,38 @@ secuencia_numero::=NUMERO COMA secuencia_numero
 secuencia_letras::= letras_MM COMA secuencia_letras
                                 |letras_MM;
 
+
+
 letras_MM::=LETRA_MAYUSCULA
                     |LETRA_MINUSCULA;
 
-//especial::=ESPECIALES GUION_N ESPECIALES;
+expresiones::=IDENTIFICADOR IGUAL  operacion PUNTO_COMA;
 
+operacion::= OR operacion operacion
+                     |CONCATENACION operacion operacion
+                     |POSITIVO operacion
+                     |KLEENE operacion
+                     |OPCIONAL operacion
+                     |operando;
+
+operando::= PARENTESIS_A IDENTIFICADOR PARENTESIS_C
+                    |STRING
+                    |LETRA_MAYUSCULA
+                    |LETRA_MINUSCULA
+                   |NUMERO
+                    |SALTO
+                    |COMILLA_DOBLE
+                    |COMILLA_SIMPLE;
+
+simbolos::= ASCII
+                     |OR
+                     |CONCATENACION 
+                     |POSITIVO 
+                     |KLEENE 
+                     |OPCIONAL ;
+
+especial::=simbolos GUION_N simbolos;
+
+                                                               
 
 

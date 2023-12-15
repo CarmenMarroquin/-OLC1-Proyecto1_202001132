@@ -8,22 +8,33 @@ package analizadorJC;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int COMA = 11;
-  public static final int GUION_N = 8;
-  public static final int LETRA_MAYUSCULA = 4;
-  public static final int PUNTO_COMA = 2;
-  public static final int CONJ = 9;
-  public static final int EOF = 0;
-  public static final int ESPECIALES = 14;
-  public static final int NUMERO = 6;
-  public static final int LLAVEC = 13;
+  public static final int COMILLA_SIMPLE = 24;
   public static final int GUION = 7;
-  public static final int LLAVEA = 12;
+  public static final int CONCATENACION = 17;
+  public static final int OR = 16;
   public static final int IGUAL = 10;
-  public static final int error = 1;
-  public static final int DOS_PUNTOS = 3;
+  public static final int LLAVEC = 13;
   public static final int LETRA_MINUSCULA = 5;
-  public static final int IDENTIFICADOR = 15;
+  public static final int LLAVEA = 12;
+  public static final int KLEENE = 20;
+  public static final int DOS_PUNTOS = 3;
+  public static final int STRING = 15;
+  public static final int COMA = 11;
+  public static final int COMILLA_DOBLE = 23;
+  public static final int EOF = 0;
+  public static final int CONJ = 9;
+  public static final int LETRA_MAYUSCULA = 4;
+  public static final int PARENTESIS_C = 22;
+  public static final int error = 1;
+  public static final int NUMERO = 6;
+  public static final int PARENTESIS_A = 21;
+  public static final int OPCIONAL = 19;
+  public static final int IDENTIFICADOR = 14;
+  public static final int PUNTO_COMA = 2;
+  public static final int ASCII = 26;
+  public static final int SALTO = 25;
+  public static final int GUION_N = 8;
+  public static final int POSITIVO = 18;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -39,8 +50,19 @@ public class sym {
   "COMA",
   "LLAVEA",
   "LLAVEC",
-  "ESPECIALES",
-  "IDENTIFICADOR"
+  "IDENTIFICADOR",
+  "STRING",
+  "OR",
+  "CONCATENACION",
+  "POSITIVO",
+  "OPCIONAL",
+  "KLEENE",
+  "PARENTESIS_A",
+  "PARENTESIS_C",
+  "COMILLA_DOBLE",
+  "COMILLA_SIMPLE",
+  "SALTO",
+  "ASCII"
   };
 }
 
