@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 
 
 
+
 /**
  *
  * @author carme
@@ -31,6 +32,8 @@ public class Interfaz extends javax.swing.JFrame {
     
        public static  String ruta = "";
        public static  String nombre_archivo = "";
+          public static String dataHTML = "";
+    public static String dataCSS = "";
     
 
     /**
@@ -53,7 +56,7 @@ public class Interfaz extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         area_texto = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        text_error = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         abrir_archivo = new javax.swing.JMenuItem();
@@ -61,7 +64,9 @@ public class Interfaz extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         ejecucion_analisis = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        boton_r = new javax.swing.JMenu();
+        botonReportes = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
@@ -71,12 +76,12 @@ public class Interfaz extends javax.swing.JFrame {
         area_texto.setRows(5);
         jScrollPane1.setViewportView(area_texto);
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(new java.awt.Color(102, 102, 102));
-        jTextArea1.setColumns(20);
-        jTextArea1.setForeground(new java.awt.Color(102, 102, 102));
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        text_error.setEditable(false);
+        text_error.setBackground(new java.awt.Color(102, 102, 102));
+        text_error.setColumns(20);
+        text_error.setForeground(new java.awt.Color(255, 102, 0));
+        text_error.setRows(5);
+        jScrollPane2.setViewportView(text_error);
 
         jMenu2.setText("Archivo");
 
@@ -118,8 +123,25 @@ public class Interfaz extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu4.setText("jMenu4");
-        jMenuBar1.add(jMenu4);
+        boton_r.setText("Reportes");
+
+        botonReportes.setText("Tokens");
+        botonReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonReportesActionPerformed(evt);
+            }
+        });
+        boton_r.add(botonReportes);
+
+        jMenuItem1.setText("errores");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        boton_r.add(jMenuItem1);
+
+        jMenuBar1.add(boton_r);
 
         setJMenuBar(jMenuBar1);
 
@@ -275,7 +297,104 @@ public class Interfaz extends javax.swing.JFrame {
            }
             
             System.out.println("se hizo clic en ejecutar"+texto);
+            
+              if (Lexer.lista_errores.isEmpty()) {
+                    System.out.println("No se encontraron errores lexicos");
+                } else {
+              
+              Lexer.lista_errores.forEach((error_t) -> {
+             System.out.println(error_t.getTipo()+ "| " + error_t.getLinea() + "| " + error_t.getColumna());
+             text_error.append(error_t.getLexema() + "| " +error_t.getTipo()+ "| " + error_t.getLinea() + "| " + error_t.getColumna()+"\n");
+                });
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              }
+                 
+   
+            
+     
     }//GEN-LAST:event_ejecucion_analisisActionPerformed
+
+    private void botonReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonReportesActionPerformed
+           
+        
+        
+        
+        // TODO add your handling code here:
+         try (FileWriter writer = new FileWriter("tokens.html")) {
+            // Escribir el encabezado del HTML
+            writer.write("<html><head><title>Tabla de Informaciones</title></head><body>\n");
+            // Escribir la etiqueta de apertura de la tabla
+            writer.write("<table border=\"1\">\n");
+            // Escribir el encabezado de la tabla
+            writer.write("<tr><th>Lexema</th><th>Nombre</th><th>Línea</th><th>Columna</th></tr>\n");
+
+            // Iterar sobre las informaciones y escribir las filas de la tabla
+ 
+
+              Lexer.listaTokens.forEach((token_t) -> {
+             
+                try {
+                    writer.write("<tr><td>" + token_t.getLexema() + "</td><td>" + token_t.getNombre() + "</td><td>"
+                            + token_t.getLinea() + "</td><td>" + token_t.getColumna() + "</td></tr>\n");
+                } catch (IOException ex) {
+                    Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                });
+                
+
+            // Escribir la etiqueta de cierre de la tabla y del HTML
+            writer.write("</table></body></html>");
+            System.out.println("Archivo HTML generado: " + "tokens.html");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+
+    
+        
+        
+        
+    }//GEN-LAST:event_botonReportesActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        
+        try (FileWriter writer = new FileWriter("errosLexicos.html")) {
+            // Escribir el encabezado del HTML
+            writer.write("<html><head><title>Tabla de Errores</title></head><body>\n");
+            // Escribir la etiqueta de apertura de la tabla
+            writer.write("<table border=\"1\">\n");
+            // Escribir el encabezado de la tabla
+            writer.write("<tr><th>Lexema</th><th>Tipo</th><th>Línea</th><th>Columna</th></tr>\n");
+
+            // Iterar sobre los errores y escribir las filas de la tabla
+          
+              Lexer.lista_errores.forEach((error_t) -> {
+             
+                try {
+                    writer.write("<tr><td>" + error_t.getLexema() + "</td><td>" + error_t.getTipo() + "</td><td>"
+                            + error_t.getLinea() + "</td><td>" + error_t.getColumna() + "</td></tr>\n");
+                } catch (IOException ex) {
+                    Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                });
+
+            // Escribir la etiqueta de cierre de la tabla y del HTML
+            writer.write("</table></body></html>");
+            System.out.println("Archivo HTML generado: " +"errosLexicos.html" );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -315,16 +434,18 @@ public class Interfaz extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem abrir_archivo;
     private javax.swing.JTextArea area_texto;
+    private javax.swing.JMenuItem botonReportes;
+    private javax.swing.JMenu boton_r;
     private javax.swing.JMenuItem ejecucion_analisis;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea text_error;
     // End of variables declaration//GEN-END:variables
 }
